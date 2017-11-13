@@ -4,7 +4,9 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="45.0dip"
+        android:id="@+id/topPanel"
         android:background="#ffcd2626" >
+
         <TextView
             android:id="@+id/title_name"
             android:layout_width="fill_parent"
@@ -29,4 +31,28 @@
             android:background="#A71717"
             android:gravity="center" />
     </RelativeLayout>
+    <EditText
+        android:id="@+id/search_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="搜索全国城市（中文）"
+        android:layout_below="@id/topPanel"
+        android:layout_margin="10.0dip"
+        android:drawableLeft="@drawable/magnifying_glass"
+        android:drawablePadding="8.0dip"
+        android:paddingBottom="8.0dip"
+        android:paddingLeft="10.0dip"
+        android:paddingRight="30.0dip"
+        android:paddingTop="8.0dip"
+        android:maxLines="1"
+        android:background="@drawable/contact_search_box_edittext_keyword_background"
+        android:textColor="#ff000000"
+        android:textColorHint="#ffcccccc"
+        android:textSize="15.0sp" />
+
+    <ListView
+        android:id="@+id/city_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_city"></ListView>
 </RelativeLayout>

@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mUpdateBtn;
 
     private ImageView mCitySelect;
-
+    private ImageView mBackBtn;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
@@ -56,10 +56,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
-
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
-
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
             Log.d("myWeather", "网络OK");
             Toast.makeText(MainActivity.this, "网络OK！", Toast.LENGTH_LONG).show();
@@ -70,10 +68,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
-
+        setContentView(R.layout.select_city);
+        initViews();
         initView();
     }
+    private void initViews(){
+        mBackBtn=(ImageView)findViewById(R.id.title_back);
+        mBackBtn.setOnClickListener(this);
+        mClearEditText=(ClearEditText)findViewById(R.layout.title_list);
 
+    }
     void initView(){
         city_name_Tv = (TextView) findViewById(R.id.title_city_name);
         cityTv = (TextView) findViewById(R.id.city);
