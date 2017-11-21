@@ -9,6 +9,10 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,18 +27,22 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
+import huahang.ss.pku.app.MyApplication;
 import huahang.ss.pku.bean.*;
 import huahang.ss.pku.util.*;
+import huahang.ss.pku.weather.*;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private static final int UPDATE_TODAY_WEATHER = 1;
 
     private ImageView mUpdateBtn;
-
+    private TextView  mListView;
     private ImageView mCitySelect;
     private ImageView mBackBtn;
+    private ProgressBar updateProgress;
     private TextView cityTv, timeTv, humidityTv, weekTv, pmDataTv, pmQualityTv,
             temperatureTv, climateTv, windTv, city_name_Tv;
     private ImageView weatherImg, pmImg;
@@ -56,6 +64,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
+        updateProgress = (ProgressBar) findViewById(R.id.title_update_progress);
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
         if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
@@ -69,15 +78,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
         setContentView(R.layout.select_city);
-        initViews();
         initView();
     }
-    private void initViews(){
-        mBackBtn=(ImageView)findViewById(R.id.title_back);
-        mBackBtn.setOnClickListener(this);
-        mClearEditText=(ClearEditText)findViewById(R.layout.title_list);
+    /*private void initViews(){
+        mListView=(ListView)findViewById(R.id.city_list_view);
+        mListView.setOnClickListener(this);
+        MyApplication myApplication=(MyApplication)getApplication();
+        List<City>cityList=myApplication.getCityList();
+        for(City city:cityList){
+            filterDataList.add(city);
+        }
+       ListAdapter myadapter=new SimpleCursorAdapter(SelectCity.this,cityList);
 
-    }
+    }*/
     void initView(){
         city_name_Tv = (TextView) findViewById(R.id.title_city_name);
         cityTv = (TextView) findViewById(R.id.city);
