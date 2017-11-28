@@ -21,50 +21,66 @@ import huahang.ss.pku.db.CityDB;
  */
 
 public class MyApplication extends Application{
-    public static Application mApplication;
-    public static final String TAG = "MyApp";
-
+    private static final String TAG = "MyAPP";
+    private static MyApplication myApplication;
     private CityDB mCityDB;
     private List<City> mCityList;
-    private String[] cityCode;
-    private String[] cityName;
-    private List<Map<String, Object>> listems;
-
     @Override
-    public void onCreate(){
+    public void onCreate() {
         super.onCreate();
-        Log.d(TAG,"MyApplication->onCreate");
-        mApplication = this;
-
-        mCityDB = openCityDB();
+        Log.d(TAG,"MyApplication->Oncreate");
+        myApplication=this;
+        mCityDB=openCityDB();
         initCityList();
     }
-
-    public static Application getInstance(){
-        return mApplication;
+    private void initCityList(){
+        mCityList =new ArrayList<City>();
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                prepareCityList();
+            }
+        }).start();
+    }
+    private boolean prepareCityList(){
+        mCityList =mCityDB.getAllCity();
+        int i=0;
+        for(City city:mCityList){
+            i++;
+            String cityName=city.getCity();
+            String cityCode=city.getNumber();
+            Log.d(TAG,cityCode+":"+cityName);
+        }
+        Log.d(TAG,"i="+i);
+        return true;
     }
 
-    private CityDB openCityDB(){
+    public List<City> getmCityList() {
+        return mCityList;
+    }
+
+    public static MyApplication getInstance(){
+        return myApplication;
+    }
+    private CityDB openCityDB() {
         String path = "/data"
                 + Environment.getDataDirectory().getAbsolutePath()
                 + File.separator + getPackageName()
-                + File.separator + "databases1"
+                + File.separator + "databases"
                 + File.separator
                 + CityDB.CITY_DB_NAME;
         File db = new File(path);
-        Log.d(TAG, "path: " + path);
+        Log.d(TAG, path);
         if (!db.exists()) {
             String pathfolder = "/data"
                     + Environment.getDataDirectory().getAbsolutePath()
-                    + File.separator + getPackageName()
-                    + File.separator + "databases1"
-                    + File.separator;
+                    + File.separator + getPackageName() + File.separator + "databases" + File.separator;
             File dirFirstFolder = new File(pathfolder);
             if (!dirFirstFolder.exists()) {
                 dirFirstFolder.mkdirs();
-                Log.d(TAG, "mkdirs");
+                Log.i("MyApp", "mkdirs");
             }
-            Log.i(TAG, "db is not exists");
+            Log.i("MyApp", "db is not exists");
             try {
                 InputStream is = getAssets().open("city.db");
                 FileOutputStream fos = new FileOutputStream(db);
@@ -81,49 +97,6 @@ public class MyApplication extends Application{
                 System.exit(0);
             }
         }
-        Log.d(TAG, "openCityDB path: "+path);
         return new CityDB(this, path);
     }
-
-    private boolean prepareCityList() {
-        mCityList = mCityDB.getAllCity();
-        ArrayList<String> cityCodeList = new ArrayList<String>();
-        ArrayList<String> cityNameList = new ArrayList<String>();
-        listems = new ArrayList<Map<String, Object>>();
-        for (City city : mCityList) {
-            Map<String, Object> listem = new HashMap<String, Object>();
-            listem.put("city", city.getCity());
-            listem.put("province", city.getProvince());
-            listems.add(listem);
-            cityNameList.add(city.getCity());
-            cityCodeList.add(city.getNumber());
-        }
-        cityCode = new String[cityCodeList.size()];
-        cityCode = cityCodeList.toArray(cityCode);
-        cityName = new String[cityNameList.size()];
-        cityName = cityNameList.toArray(cityName);
-        return  true;
-    }
-
-    private void initCityList(){
-        mCityList = new ArrayList<City>();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                prepareCityList();
-            }
-        }).start();
-    }
-
-    public String[] getCityCodeList(){
-        return cityCode;
-    }
-    public String[] getCityNameList(){
-        return cityName;
-    }
-
-    public List<Map<String,Object>> getCityDetailList(){
-        return listems;
-    }
-
 }
