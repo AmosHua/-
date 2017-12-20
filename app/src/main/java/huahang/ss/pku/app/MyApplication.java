@@ -25,6 +25,9 @@ public class MyApplication extends Application{
     private static MyApplication myApplication;
     private CityDB mCityDB;
     private List<City> mCityList;
+    private String[] cityCode;
+    private String[] cityName;
+    private List<Map<String, Object>> listems;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,16 +47,30 @@ public class MyApplication extends Application{
     }
     private boolean prepareCityList(){
         mCityList =mCityDB.getAllCity();
+        ArrayList<String> cityCodeList = new ArrayList<String>();
+        ArrayList<String> cityNameList = new ArrayList<String>();
+        listems = new ArrayList<Map<String, Object>>();
         int i=0;
         for(City city:mCityList){
             i++;
             String cityName=city.getCity();
             String cityCode=city.getNumber();
             Log.d(TAG,cityCode+":"+cityName);
+            Map<String, Object> listem = new HashMap<String, Object>();
+            listem.put("city", city.getCity());
+            listem.put("province", city.getProvince());
+            listems.add(listem);
+            cityNameList.add(city.getCity());
+            cityCodeList.add(city.getNumber());
         }
+        cityCode = new String[cityCodeList.size()];
+        cityCode = cityCodeList.toArray(cityCode);
+        cityName = new String[cityNameList.size()];
+        cityName = cityNameList.toArray(cityName);
         Log.d(TAG,"i="+i);
         return true;
     }
+
 
     public List<City> getmCityList() {
         return mCityList;
@@ -98,5 +115,11 @@ public class MyApplication extends Application{
             }
         }
         return new CityDB(this, path);
+    }
+    public String[] getCityCodeList(){
+        return cityCode;
+    }
+    public String[] getCityNameList(){
+        return cityName;
     }
 }

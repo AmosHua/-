@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -66,12 +67,15 @@
             android:layout_toLeftOf="@id/title_share"
             android:src="@drawable/base_action_bar_action_city"/>
     </RelativeLayout>
+
     <LinearLayout
+        android:id="@+id/line1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title"
         android:background="@drawable/biz_plugin_weather_shenzhen_bg"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        tools:ignore="InvalidId">
         <!--今日天气信息-->
         <RelativeLayout
             android:id="@+id/weather_today"
@@ -196,7 +200,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/humidity"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:id="@+id/todayweather"
+                >
 
                 <ImageView
                     android:id="@+id/weather_img"
@@ -254,12 +260,48 @@
                     android:textSize="20.0dp" />
 
             </RelativeLayout>
-
+            <!--六日天气-->
+            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/todayweather"
+                android:gravity="center_horizontal">
+                <android.support.v4.view.ViewPager
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/weather_this_week"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal">
+                </android.support.v4.view.ViewPager>
+                <!--<include layout="@layout/weather_info_page_1"/>-->
+                <!--标记-->
+                <LinearLayout
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_horizontal"
+                    android:background="#ff000000">
+                    <ImageView
+                        android:id="@+id/iv1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:src="@drawable/page_indicator_focused"/>
+                    <ImageView
+                        android:id="@+id/iv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:src="@drawable/page_indicator_unfocused"/>
+                </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
 
-
-        <!--七日天气信息-->
-        <!--广告信息-->
-
     </LinearLayout>
+
+
 </RelativeLayout>
